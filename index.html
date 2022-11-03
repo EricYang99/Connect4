@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Connect Four</title>
+    <link rel = "stylesheet" href = "homeStyle.css">
+</head>
+<body>
+    <div id = "HomeScreen" class = "HomeScreen">
+        <p style = "top: 0; margin-top: 0; margin-bottom: 10%;">Home Screen</p>
+        <p><input class = "openButton" type = "button" value = "Info Screen" onclick="openInfo()"></p>
+        <p><input class = "openButton" type = "button" value = "Settings Screen" onclick="openSettings()"></p>
+        <p><input class = "openButton" type = "button" value = "About Me Screen" onclick="openAbout()"></p>
+        <p><input class = "openButton" type = "button" value = "Game Screen" onclick="openGame()"></p>
+        <br>
+        <p><input class = "openButton" type = "button" value = "Run Game Here :D" onclick="createGameScreen()"><p>
+    </div>
+    <script src = "allRunner.js"></script>
+
+    <div id = "InfoScreen" class = "InfoScreen">
+        <p class = "closeInfoButton" onclick = "closeInfo()" style="font-size: 100px;">&times</p>
+        <p>How To Play</p>
+    </div>
+
+
+
+
+    <div id = "SettingsScreen" class = "SettingsScreen">
+        <p class = "closeSettingsButton" onclick = "closeSettings()" style="font-size: 100px;">&times</p>
+        <p>Settings</p>
+        <div class = "colorChangeContainer">
+            <p>
+                Change Player 1 Color:
+                <br>
+                <input class = "ColorChanger" id = "colorChanger1" type = "text" placeHolder = "Color 1">
+                <br>
+                <input type = "button" value = "Change Player 1 Color" onclick = "changeColor1()">
+            </p>
+            <p>
+                Change Player 2 Color:
+                <br>
+                <input class = "ColorChanger" id = "colorChanger2" type = "text" placeHolder = "Color 2">
+                <br>
+                <input type = "button" value = "Change Player 2 Color" onclick = "changeColor2()">
+            </p>
+            <p>
+                Change Board Color:
+                <br>
+                <input class = "ColorChanger" id = "colorChanger3" type = "text" placeHolder = "Board Color">
+                <br>
+                <input type = "button" value = "Change Board Color" onclick = "changeColor3()">
+            </p>
+        </div>
+
+        <div class = "nameChangeContainer">
+            <p>
+                Change Player 1 Name:
+                <br>
+                <input class = "NameChanger" id = "NameChanger1" type = "text" placeholder="Player 1">
+                <br>
+                <input type = "button" value = "Change Player 1 Name" onclick = "changeName1()">
+            </p>
+            <p>
+                Change Player 2 Name:
+                <br>
+                <input class = "NameChanger" id = "NameChanger2" type = "text" placeholder="Player 2">
+                <br>
+                <input type = "button" value = "Change Player 2 Name" onclick = "changeName2()">
+            </p>
+        </div>
+
+        <div class = "boardSizeChange">
+            <p>
+                Change Row Size:
+                <br>
+                <input class = "rowChanger" id = "rowChanger" type = "number" value = "6">
+                <br>
+                <input type = "button" value = "Change Board Row Size" onclick = "changeRowNumber()">
+            </p>
+            <p>
+                Change Column Size:
+                <br>
+                <input class = "colChanger" id = "colChanger" type = "number" value = "7">
+                <br>
+                <input type = "button" value = "Change Board Column Size" onclick = "changeColNumber()">
+            </p>
+        </div>
+    </div>
+
+
+
+
+    <div id = "AboutMeScreen" class = "AboutMeScreen">
+        <p class = "closeAboutButton" onclick = "closeAbout()" style="font-size: 100px;">&times</p>
+        <p>About</p>
+    </div>
+    <div id = "GameScreen" class = "GameScreen">
+        <p class = "closeGameButton" onclick = "closeGame()" style="font-size: 100px;">&times</p>
+        <p>Game</p>
+    </div>
+</body>
+</html>

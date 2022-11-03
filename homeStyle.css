@@ -1,0 +1,281 @@
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background-color: brown;
+    font-size: 30px;
+    transition: 0.5s; /*Shows the sliding effect*/
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.HomeScreen{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    transition: 0.5s;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.openButton{
+    background-color: brown;
+    width: fit-content;
+    height: fit-content;
+    font-size: 30px;
+    border: 0;
+}
+
+.openButton:hover{
+    background-color: black;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+.InfoScreen{
+    height: 100%; /* We want it to cover the entire screen*/
+    width: 0; /* We start it at 0 because it should not appear yet, changes with JS*/
+    position: fixed; /* It will stay in place*/
+    z-index: 1; /* Stays in front of the page */
+    top: 0; /* Stays at the top */
+    left: 0; /* This nav bar will be comming from the left, change it to right if we want one in the right side */
+    background-color: blue;
+    overflow-x: hidden; /* Disables the horizontal scrolling*/
+    padding-top: 0; /* Places content 50px from the top */
+    transition: 0.5s; /*Shows the sliding effect*/
+}
+
+.InfoScreen p{ /* This just changes the paragraph tags and how they are displayed in the side bar*/
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: 0.0s;
+    font-size: 30px;
+}
+
+.closeInfoButton{
+    position: absolute; /* The x button should not move*/
+    top: 0px; /* This will be at the top of the page */
+    right: 15px; /* Moved 25 px from the right*/
+    font-size: 100px; /* Making it visible */
+    margin-top: 0;
+}
+
+
+
+
+
+
+
+
+.SettingsScreen{
+    height: 100%; /* We want it to cover the entire screen*/
+    width: 0; /* We start it at 0 because it should not appear yet, changes with JS*/
+    position: fixed; /* It will stay in place*/
+    z-index: 1; /* Stays in front of the page */
+    top: 0; /* Stays at the top */
+    right: 0; /* This nav bar will be comming from the left, change it to right if we want one in the right side */
+    background-color: red;
+    overflow-x: hidden; /* Disables the horizontal scrolling*/
+    padding-top: 0; /* Places content 50px from the top */
+    transition: 0.5s; /*Shows the sliding effect*/
+}
+
+.SettingsScreen p{ /* This just changes the paragraph tags and how they are displayed in the side bar*/
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: 0.0s;
+    font-size: 30px;
+    text-align: center;
+}
+
+.NameChanger, .ColorChanger, .rowChanger, .colChanger{
+    padding: 16px 16px 16px 16px;
+    text-decoration: none;
+    transition: 0.0s;
+    font-size: 30px;
+    text-align: center;
+}
+
+.nameChangeContainer{
+    display: block;
+    left: 0;
+    margin-left: 2rem;
+    position: absolute;
+}
+
+.colorChangeContainer{
+    display: block;
+    width: 100%;
+    position: absolute;
+}
+
+.boardSizeChange{
+    display: block;
+    right: 0;
+    margin-right: 2rem;
+    position: absolute;
+}
+
+.closeSettingsButton{
+    position: absolute; /* The x button should not move*/
+    top: 0px; /* This will be at the top of the page */
+    left: 15px; /* Moved 25 px from the right*/
+    font-size: 100px; /* Making it visible */
+    margin-top: 0;
+}
+
+
+
+
+
+
+
+.AboutMeScreen{
+    height: 0%; /* We start it at 0 because it should not appear yet, changes with JS*/
+    width: 100%;
+    position: fixed; /* It will stay in place*/
+    z-index: 1; /* Stays in front of the page */
+    bottom: 0;/* Stays at the bottom */
+    background-color: purple;
+    overflow-x: hidden; /* Disables the  scrolling*/
+    transition: 0.5s; /*Shows the sliding effect*/
+}
+.AboutMeScreen p{ /* This just changes the paragraph tags and how they are displayed in the side bar*/
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: 0.0s;
+    font-size: 30px;
+}
+
+.closeAboutButton{
+    position: absolute; /* The x button should not move*/
+    top: 0px; /* This will be at the top of the page */
+    left: 15px; /* Moved 25 px from the right*/
+    font-size: 100px; /* Making it visible */
+    margin-top: 0;
+}
+
+
+
+
+
+
+
+
+
+.GameScreen{
+    height: 0%; /* We start it at 0 because it should not appear yet, changes with JS*/
+    width: 100%;
+    position: fixed; /* It will stay in place*/
+    z-index: 1; /* Stays in front of the page */
+    top: 0; /* Stays at the top */
+    left: 0;
+    background-color: orange;
+    overflow-x: hidden; /* Disables the horizontal scrolling*/
+    padding-top: 0; /* Places content 50px from the top */
+    transition: 0.5s; /*Shows the sliding effect*/
+}
+
+.GameScreen p{ /* This just changes the paragraph tags and how they are displayed in the side bar*/
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: 0.0s;
+    font-size: 30px;
+}
+
+.closeGameButton{
+    position: absolute; /* The x button should not move*/
+    top: 0px; /* This will be at the top of the page */
+    right: 15px; /* Moved 15 px from the right*/
+    font-size: 100px; /* Making it visible */
+    margin-top: 0;
+}
+
+
+
+
+
+
+
+
+/* Game styles*/
+.reset{
+    position: fixed;
+    top: 25%;
+    left: 15%;
+    transform: translate(-50%);
+    border: 1px black solid;
+    width: 5rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.backToHomeButton{
+    position: fixed;
+    top: 35%;
+    left: 15%;
+    transform: translate(-50%);
+    border: 1px black solid;
+    width: 5rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.gameContainer1{
+    position: absolute;
+    top: 6rem;
+    left: 50%;
+    transform: translate(-50%);
+    border: 1px black solid;
+    box-shadow: 10px 10px rgb(59, 59, 59);
+    padding: 1.5rem;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.topOfContainer{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.gameContainer1 table tr td{
+    width: 100px;
+    height: 80px;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+}
+
+.playerTurn{
+    background-color: white;
+    width: 100%;
+}
+
+.topGameContainer{
+    background-color: white;
+    width: 100%;
+    top: 0;
+}
