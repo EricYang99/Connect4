@@ -7,18 +7,49 @@
 <body>
     <div id = "HomeScreen" class = "HomeScreen">
         <p style = "top: 0; margin-top: 0; margin-bottom: 10%;">Home Screen</p>
-        <p><input class = "openButton" type = "button" value = "Info Screen" onclick="openInfo()"></p>
-        <p><input class = "openButton" type = "button" value = "Settings Screen" onclick="openSettings()"></p>
-        <p><input class = "openButton" type = "button" value = "About Me Screen" onclick="openAbout()"></p>
-        <p><input class = "openButton" type = "button" value = "Game Screen" onclick="openGame()"></p>
-        <br>
-        <p><input class = "openButton" type = "button" value = "Run Game Here :D" onclick="createGameScreen()"><p>
+        <p><input class = "openButton" type = "button" value = "How To Play" onclick="openInfo()"></p>
+        <p><input class = "openButton" type = "button" value = "Settings" onclick="openSettings()"></p>
+        <p><input class = "openButton" type = "button" value = "About" onclick="openAbout()"></p>
+        <p><input class = "openButton" type = "button" value = "Leader Board" onclick="openLeaderBoard()"></p>
+        <p><input class = "openButton" type = "button" value = "Play Game :D" onclick="createGameScreen()"><p>
     </div>
     <script src = "allRunner.js"></script>
 
     <div id = "InfoScreen" class = "InfoScreen">
         <p class = "closeInfoButton" onclick = "closeInfo()" style="font-size: 100px;">&times</p>
         <p>How To Play</p>
+        <div class = "winOne">
+            <h5>Win Condition 1</h5>
+            <img class = "HowToWinImg" src = "Images\VertWin.png">
+        </div>
+        <div class = "winTwo">
+            <h5>Win Condition 2</h5>
+            <img class = "HowToWinImg" src = "Images\HorWin.png">
+        </div>
+        <div class = "winThree">
+            <h5>Win Condition 3</h5>
+            <img class = "HowToWinImg" src = "Images\DiagWinOne.png">
+        </div>
+        <div class = "winFour">
+            <h5>Win Condition 4</h5>
+            <img class = "HowToWinImg" src = "Images\DiagWinTwo.png">
+        </div>
+        <div class = "howToPlay">
+            <ul>
+                <li>You must match one of the following patterns to win.</li>
+                <li>Winner will start the next match after the reset button is pressed.</li>
+                <li>The reset button will reset the entire game.</li>
+                <li>The person who went last before the reset will start.</li>
+                <li>The flip button will cause the board to shift upside down and use the player's turn</li>
+                <li>Each player only gets 1 flip per round</li>
+                <li>Below is an example of how flip is used</li>
+            </ul>
+        </div>
+        <div class = "flipExample">
+            <img class = "HowToWinImg" src = "Images\FlipOne.png">
+            <h5> &nbsp&nbsp &#8658 &nbsp&nbsp </h5>
+            <img class = "HowToWinImg" src = "Images\FlipTwo.png">
+        </div>
     </div>
 
 
@@ -92,10 +123,14 @@
     <div id = "AboutMeScreen" class = "AboutMeScreen">
         <p class = "closeAboutButton" onclick = "closeAbout()" style="font-size: 100px;">&times</p>
         <p>About</p>
+        <div class = "desc">
+            <h5>This is a project for CSCI 130</h5>
+            <h5>Created by Eric Yang</h5>
+            <h5>Date: Nov. 10, 2022</h5>
+        </div>
     </div>
-    <div id = "GameScreen" class = "GameScreen">
-        <p class = "closeGameButton" onclick = "closeGame()" style="font-size: 100px;">&times</p>
-        <p>Game</p>
+
+    <div id = "LeaderBoard" class = "LeaderBoard">
     </div>
 </body>
 </html>

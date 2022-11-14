@@ -1,4 +1,6 @@
 //Home Runner
+
+//All these are just animations to move the screen up, down, left, and right
 //Open Information Screen
 function openInfo() {
     document.getElementById("InfoScreen").style.width = "100%";
@@ -32,21 +34,142 @@ function closeAbout() {
 }
 
 //Open Game
-function openGame() {
-    document.getElementById("GameScreen").style.height = "100%";
+function openLeaderBoard() {
+    document.getElementById("LeaderBoard").style.height = "100%";
     document.getElementById("HomeScreen").style.height = "0";
+    //This call will help us load in the leader board as soon as the page loads
+    displayLeaderBoard();
 }
 
-function closeGame() {
-    document.getElementById("GameScreen").style.height = "0";
+function closeLeaderBoard() {
+    document.getElementById("LeaderBoard").style.height = "0";
     document.getElementById("HomeScreen").style.height = "100%";
+    document.getElementById("LeaderBoard").innerHTML = '';
 }
 
 
+//This is where all our database functions will be ///////////////////////////////////////////////////////////////////////////////////////////////////
+//This will load in all the data for the game from the database
+let xhr = new XMLHttpRequest();
+let allData = [];
+let allNames = [];
+let allWins = [];
+function getAllData(){
+    if(!xhr){
+        alert('Cannot create an XMLHTTP instance');
+        return false;
+    }
+    xhr.open('POST', 'getData.php');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send();
+    xhr.onreadystatechange = responseGetData;
+}
+
+function responseGetData(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        allNames = [];
+        allWins = [];
+        allData = JSON.parse(xhr.responseText);
+        for(let i = 0; i < allData[0].length; i++){
+            allNames.push(allData[0][i][0]);
+            allWins.push(allData[0][i][1]);
+        }
+    }
+}
+//This call will allow us to always have the data that we want
+getAllData();
 
 
-//Game Runner
+//This will load in all the data for the game to display the leader board;
+let displayXhr = new XMLHttpRequest();
+let leaderBoardData = [];
+function displayLeaderBoard(){
+    if(!displayXhr){
+        alert('Cannot create an XMLHTTP instance');
+        return false;
+    }
+    displayXhr.open('POST', 'getLeaderboard.php');
+    displayXhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    displayXhr.send();
+    displayXhr.onreadystatechange = responseBoard;
+}
 
+function responseBoard(){
+    if(displayXhr.readyState == 4 && displayXhr.status == 200){
+        leaderBoardData = JSON.parse(displayXhr.responseText);
+        let leaderBoardContainer = document.getElementById("LeaderBoard");
+
+        let button = document.createElement('p');
+            button.className = "closeLeaderBoardButton";
+            button.onclick = closeLeaderBoard;
+            button.style.fontSize = "100px";
+            button.innerHTML = '&times';
+
+        let title = document.createElement('p');
+            title.appendChild(document.createTextNode('Leader Board'));
+
+        leaderBoardContainer.appendChild(button);
+        leaderBoardContainer.appendChild(title);
+
+        let newTable = document.createElement('table');
+        newTable.className = "leaderBoard";
+        let newBody = document.createElement('tbody');
+        newTable.appendChild(newBody);
+        for(let i = 0; i < leaderBoardData[0].length; i++){
+            let tr = document.createElement('tr');
+
+            let tdNames = document.createElement('td');
+            tdNames.appendChild(document.createTextNode(leaderBoardData[0][i][0]));
+
+            let tdWins = document.createElement('td');
+            tdWins.appendChild(document.createTextNode(leaderBoardData[0][i][1]));
+
+            tr.appendChild(tdNames);
+            tr.appendChild(tdWins);
+            newBody.appendChild(tr);
+        }
+        leaderBoardContainer.appendChild(newTable);
+    }
+}
+
+let newNameXhr = new XMLHttpRequest();
+function sendNewName(name){
+    if(!newNameXhr){
+        alert('Cannot create an XMLHTTP instance');
+        return false;
+    }
+    newNameXhr.open('POST', 'addName.php');
+    newNameXhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    newNameXhr.send(name);
+    newNameXhr.onreadystatechange = responseNewName;
+}
+
+function responseNewName(){
+    if(newNameXhr.readyState == 4 && newNameXhr.status == 200){
+        getAllData();
+    }
+}
+
+
+let winXhr = new XMLHttpRequest();
+function updateWins(name, score){
+    if(!winXhr){
+        alert('Cannot create an XMLHTTP instance')
+    }
+    winXhr.open('POST', 'updateWins.php');
+    winXhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    winXhr.send(JSON.stringify({playerName: name, Wins: score}));
+    winXhr.onreadystatechange = responseWinUpdate;
+}
+
+function responseWinUpdate(){
+    if(winXhr.readyState == 4 && winXhr.status == 200){
+        getAllData();
+    }
+}
+
+//Game Runner //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//These function will dynamically load in the home page, or the game page. It will also allow us to play the game
 var tableRow = document.getElementsByTagName('tr');
 var tableCell = document.getElementsByTagName('td');
 var tableSlot = document.querySelectorAll('.slot');
@@ -61,16 +184,46 @@ var player2;
 var player1Color;
 var player2Color;
 var boardColor;
+let player1Index;
+let player2Index;
+
+//Initializing the flip counters
+let player1FlipCounter = 0;
+let player2FlipCounter = 0;
 
 function changeName1() {
     let name = document.getElementById("NameChanger1").value;
     player1 = name;
     alert(`Player 1's name has changed to ${player1}`);
+    for(let i = 0; i < allNames.length; i++){
+        if(i+1 == allNames.length && player1 != allNames[i]){
+            player1Index = allNames.length;
+            sendNewName(player1);
+            alert("New Name!");
+        }
+        if(player1 == allNames[i]){
+            player1Index = i;
+            i = allNames.length;
+            alert("Name Found!");
+        }
+    }
 }
 function changeName2() {
     let name = document.getElementById("NameChanger2").value;
     player2 = name;
     alert(`Player 2's name has changed to ${player2}`);
+    for(let i = 0; i < allNames.length; i++){
+        if(i+1 == allNames.length && player2 != allNames[i]){
+            player2Index = allNames.length;
+            sendNewName(player2);
+            alert("New Name!");
+        }
+        if(player2 == allNames[i]){
+            player2Index = i;
+            i = allNames.length;
+            alert("Name Found!");
+        }
+    }
 }
 
 function isColor(strColor){
@@ -168,6 +321,12 @@ let backToHome = document.createElement('input');
     backToHome.type = "button";
     backToHome.value = "Back To Home";
 
+let flipButton = document.createElement('input');
+    flipButton.className = "flipButton";
+    flipButton.id = "flipButton";
+    flipButton.type = "button";
+    flipButton.value = "Flip The Board"
+
 function createGame() {
     let table = document.createElement("table");
     table.id = "gameTable";
@@ -193,22 +352,6 @@ function deleteGameTable(){
         table.deleteRow(i);
     }
     table.remove();
-}
-
-function resetGame() {
-    for (let i = 0; i < tableRow.length; i++) {
-        for (let j = 0; j < (tableCell.length / tableRow.length); j++) {
-            tableRow[i].children[j].style.backgroundColor = 'white';
-        }
-    }
-    h3.style.color = 'black';
-
-    if (currentPlayer == 1) {
-        playerTurn.textContent = `${player1}'s turn!`;
-    }
-    else {
-        playerTurn.textContent = `${player2}'s turn!`;
-    }
 }
 
 
@@ -244,35 +387,35 @@ function createHome() {
             let inp2 = document.createElement("input");
             inp2.className = "openButton";
             inp2.type = "button";
-            inp2.value = "Info Screen";
+            inp2.value = "How To Play";
             inp2.onclick = openInfo;
             p2.appendChild(inp2);
         let p3 = document.createElement('p');
             let inp3 = document.createElement("input");
             inp3.className = "openButton";
             inp3.type = "button";
-            inp3.value = "Settings Screen";
+            inp3.value = "Settings";
             inp3.onclick = openSettings;
             p3.appendChild(inp3);
         let p4 = document.createElement('p');
             let inp4 = document.createElement("input");
             inp4.className = "openButton";
             inp4.type = "button";
-            inp4.value = "About Me Screen";
+            inp4.value = "About";
             inp4.onclick = openAbout;
             p4.appendChild(inp4);
         let p5 = document.createElement('p');
             let inp5 = document.createElement("input");
             inp5.className = "openButton";
             inp5.type = "button";
-            inp5.value = "Game Screen";
-            inp5.onclick = openGame;
+            inp5.value = "Leader Board";
+            inp5.onclick = openLeaderBoard;
             p5.appendChild(inp5);
         let p6 = document.createElement('p');
             let inp6 = document.createElement("input");
             inp6.className = "openButton";
             inp6.type = "button";
-            inp6.value = "Run Game Here :D";
+            inp6.value = "Play Game :D";
             inp6.onclick = createGameScreen;
             p6.appendChild(inp6);
 
@@ -284,14 +427,15 @@ function createHome() {
     bod.appendChild(p6);
 }
 
-
-reset.onclick = resetGame;
 backToHome.onclick = createHome;
-//Run the game
+
+//Run the game //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//This section is the entire game. It will be ran through a function that will always update for every move a person makes.
 function createGameScreen() {
     deleteHome();
     createGame();
     currentPlayer = 1;
+
     let bod = document.getElementById("HomeScreen");
         bod.style.backgroundColor = "white";
         bod.style.height = (rowNumber * 4) + "rem";
@@ -301,6 +445,7 @@ function createGameScreen() {
         gameContainer.style.width = (colNumber * 100) + "px + 1.5rem";
     bod.appendChild(gameContainer);
     bod.appendChild(reset);
+    bod.appendChild(flipButton);
 
 
     while(player1Color == null || player1Color == undefined || player1Color == "") {
@@ -310,6 +455,16 @@ function createGameScreen() {
     while(player1 == null || player1 == undefined || player1 == "") {
         player1 = prompt('Player One: Enter Name, You are ' + player1Color);
     }
+    for(let i = 0; i < allNames.length; i++){
+        if(i+1 == allNames.length && player1 != allNames[i]){
+            player1Index = allNames.length;
+            sendNewName(player1);
+        }
+        if(player1 == allNames[i]){
+            player1Index = i;
+            i = allNames.length;
+        }
+    }
 
     while(player2Color == null || player2Color == undefined || player2Color == "") {
         player2Color = 'yellow';
@@ -317,6 +472,16 @@ function createGameScreen() {
 
     while (player2 == null || player2 == undefined || player2 == "") {
         player2 = prompt('Player Two: Enter Name, You are ' + player2Color);
+    }
+    for(let i = 0; i < allNames.length; i++){
+        if(i+1 == allNames.length && player2 != allNames[i]){
+            player2Index = allNames.length;
+            sendNewName(player2);
+        }
+        if(player2 == allNames[i]){
+            player2Index = i;
+            i = allNames.length;
+        }
     }
 
     while(boardColor == null || boardColor == undefined || boardColor == "") {
@@ -350,6 +515,7 @@ function createGameScreen() {
                     if (horizontalCheck() || verticalCheck() || firstDiagCheck() || secondDiagCheck()) {
                         playerTurn.textContent = `${player1} has won!`;
                         playerTurn.style.color = player1Color;
+                        updateWins(allNames[player1Index], allWins[player1Index]);
                         return (alert(`Winner is ${player1}!`));
                     }
                     else if (drawCheck()) {
@@ -367,6 +533,7 @@ function createGameScreen() {
                     if (horizontalCheck() || verticalCheck() || firstDiagCheck() || secondDiagCheck()) {
                         playerTurn.textContent = `${player2} has won!`;
                         playerTurn.style.color = player2Color;
+                        updateWins(allNames[player2Index], allWins[player2Index]);
                         return (alert(`Winner is ${player2}!`));
                     }
                     else if (drawCheck()) {
@@ -451,4 +618,99 @@ function createGameScreen() {
             }
         }
     }
+
+
+    function resetGame() {
+        for (let i = 0; i < tableRow.length; i++) {
+            for (let j = 0; j < (tableCell.length / tableRow.length); j++) {
+                tableRow[i].children[j].style.backgroundColor = 'white';
+            }
+        }
+        h3.style.color = 'black';
+        player1FlipCounter = 0;
+        player2FlipCounter = 0;
+        if (currentPlayer == 1) {
+            playerTurn.textContent = `${player1}'s turn!`;
+        }
+        else {
+            playerTurn.textContent = `${player2}'s turn!`;
+        }
+    }
+
+    reset.onclick = resetGame;
+
+
+    function flipChange() {
+        for (let i = 0; i < colNumber; i++) {
+            let countWhites = 0;
+            for (let p = 0; p < rowNumber; p++) {
+                if (tableRow[p].children[i].style.backgroundColor == 'white') {
+                    countWhites++;
+                }
+            }
+            for (let j = rowNumber - 1; j > countWhites; j--) {
+                if (tableRow[j].children[i].style.backgroundColor == 'white') { }
+                else {
+                    temp = tableRow[j].children[i].style.backgroundColor;
+                    tableRow[j].children[i].style.backgroundColor = tableRow[countWhites].children[i].style.backgroundColor;
+                    tableRow[countWhites].children[i].style.backgroundColor = temp;
+                    countWhites++;
+                }
+            }
+        }
+        if (currentPlayer === 1) {
+            if (horizontalCheck() || verticalCheck() || firstDiagCheck() || secondDiagCheck()) {
+                playerTurn.textContent = `${player1} has won!`;
+                playerTurn.style.color = player1Color;
+                return (alert(`Winner is ${player1}!`));
+            }
+            else if (drawCheck()) {
+                playerTurn.textContent = `Draw Game`;
+                playerTurn.style.color = 'Green';
+                return (alert(`Game is a Draw!`));
+            }
+            else {
+                playerTurn.textContent = `${player2}'s turn!`;
+                return currentPlayer = 2;
+            }
+        }
+        else {
+            if (horizontalCheck() || verticalCheck() || firstDiagCheck() || secondDiagCheck()) {
+                playerTurn.textContent = `${player2} has won!`;
+                playerTurn.style.color = player2Color;
+                return (alert(`Winner is ${player2}!`));
+            }
+            else if (drawCheck()) {
+                playerTurn.textContent = `Draw Game`;
+                playerTurn.style.color = 'Green';
+                return (alert(`Game is a Draw!`));
+            }
+            else {
+                playerTurn.textContent = `${player1}'s turn!`;
+                return currentPlayer = 1;
+            }
+        }
+    }
+
+    function flipBoard() {
+        if (currentPlayer == 1) {
+            if (player1FlipCounter == 0) {
+                player1FlipCounter++;
+                flipChange();
+            }
+            else {
+                alert(player1 + " has already done a flip this round");
+            }
+        }
+        else if (currentPlayer == 2) {
+            if (player2FlipCounter == 0) {
+                player2FlipCounter++;
+                flipChange();
+            }
+            else {
+                alert(player2 + " has already done a flip this round");
+            }
+        }
+    }
+    flipButton.onclick = flipBoard;
 }

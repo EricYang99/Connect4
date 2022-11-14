@@ -5,4 +5,4 @@ Run index.html inside of this folder and it should run the game
 
 You can change your name, color, and the size of the board inside of the settings tab.
 
-Other tabs dont work at the moment.
+Everything works in this version, but it is ran with a local database.
